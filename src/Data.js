@@ -23,6 +23,18 @@ class Story{
 const initpath=window.require('electron').ipcRenderer.sendSync('getpath');
 class Data{
   static duan_name=["将要做","进行中","已完成"];
+  static clearStage(stage){
+    let board=Data.config.boards[stage.board_index];
+    let stories=board.stories;
+    let new_stories=[];
+    for(var i=0;i<stories.length;i++){
+      let item=stories[i];
+      if(item.duan!=stage.duan){
+        new_stories.push(item);
+      }
+    }
+    board.stories=new_stories;
+  }
   static new_Story(board_index,color,description,duan){
     let s=new Story(color,description);
     s.duan=duan;

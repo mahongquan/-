@@ -84,6 +84,12 @@ export default class AppScrum extends Component<Props> {
     this.setState({show_input:true});// boards:data.boards});
 
   }
+  clearStage=(stage)=>{
+    console.log(this);
+
+    data.clearStage(stage);
+    this.setState({boards:data.config.boards});
+  }
   clickBoard=(id)=>{
     console.log(id);
     console.log(this.props);
@@ -130,9 +136,10 @@ export default class AppScrum extends Component<Props> {
           </Tab>); 
     });
     let boarditem_panels=this.state.boards.map((item,key)=>{
+      let stories=item.stories;
         return(
         <TabPanel key={key} style={{padding:"0px 10px 10px 10px"}}>
-          <BoardView index={key} />
+          <BoardView index={key} clearStage={this.clearStage} stories={stories} />
         </TabPanel>
         ); 
     });

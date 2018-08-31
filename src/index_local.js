@@ -22,10 +22,10 @@ function getWhere(){
   console.log(p);
   let where;
   if(p==="."){
-     where=path.join(p,".."); 
+     where=path.join(p,"."); 
   }
   else{
-    where=path.join(p,"../../..");
+    where=path.join(p,"..");
   }
   console.log(where);
   return where;
