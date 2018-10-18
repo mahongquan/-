@@ -1,5 +1,9 @@
 import React from 'react';
-import { Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
 import data from './Data';
 var { shell } = window.require('electron'); //
 export default class App extends React.Component {
@@ -8,9 +12,9 @@ export default class App extends React.Component {
   };
   render = () => {
     return (
-      <Modal show={this.props.showModal} onClose={this.props.closeModal}>
-        <Modal.Header>关于便帖薄</Modal.Header>
-        <Modal.Body>
+      <Dialog open={this.props.showModal} onClose={this.props.closeModal}>
+        <DialogTitle>关于便帖薄</DialogTitle>
+        <DialogContent>
           <table>
             <tbody>
               <tr>
@@ -71,13 +75,13 @@ export default class App extends React.Component {
               </tr>
             </tbody>
           </table>
-        </Modal.Body>
-        <Modal.Footer>
-          <button className="btn btn-primary" onClick={this.props.closeModal}>
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={this.props.closeModal}>
             确定
-          </button>
-        </Modal.Footer>
-      </Modal>
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   };
 }

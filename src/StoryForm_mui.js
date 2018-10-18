@@ -1,5 +1,11 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+// import  {Modal} from "react-bootstrap";
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+
+import Button from '@material-ui/core/Button';
 import data from './Data';
 var moment = require('moment');
 var locale = require('moment/locale/zh-cn');
@@ -89,11 +95,11 @@ export default class StoryForm extends Component {
       div_upgrade = <button onClick={this.upgrade}>完成</button>;
     }
     return (
-      <Modal show={this.props.showModal} onHide={this.props.closeModal}>
-        <Modal.Header closeButton>
-          <h2>编辑事项</h2>
-        </Modal.Header>
-        <Modal.Body>
+      <Dialog open={this.props.showModal}>
+        <DialogTitle>
+          <p>编辑事项</p>
+        </DialogTitle>
+        <DialogContent>
           <table style={{ width: '100%' }}>
             <tbody>
               <tr style={{ display: 'none' }}>
@@ -124,7 +130,7 @@ export default class StoryForm extends Component {
                     value={this.state.description}
                     onChange={this.onChange}
                     style={{
-                      fontSize: '24px',
+                      fontSize: '20px',
                       borderRadius: '0.3em',
                       backgroundColor: this.state.color,
                       width: '100%',
@@ -166,13 +172,16 @@ export default class StoryForm extends Component {
               </tr>
             </tbody>
           </table>
-        </Modal.Body>
-        <Modal.Footer>
-          <button onClick={this.save} className="btn save btn-primary">
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={this.save}>
             保存
-          </button>
-        </Modal.Footer>
-      </Modal>
+          </Button>
+          <Button variant="outlined" onClick={this.props.closeModal}>
+            取消
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   };
 }

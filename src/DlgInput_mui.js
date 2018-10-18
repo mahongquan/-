@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
-import { Modal } from 'react-bootstrap';
+import Dialog from '@material-ui/core/Dialog';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogActions from '@material-ui/core/DialogActions';
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
 export default class DlgInput extends Component {
   state = { description: '' };
   onChange = e => {
@@ -24,26 +29,25 @@ export default class DlgInput extends Component {
   };
   render = () => {
     return (
-      <Modal show={this.props.showModal} onHide={this.props.closeModal}>
-        <Modal.Header closeButton>
-          <h2>input name</h2>
-        </Modal.Header>
-        <Modal.Body>
-          <input
-            style={{ width: '100%' }}
+      <Dialog open={this.props.showModal} onClose={this.props.closeModal}>
+        <DialogTitle>Input name</DialogTitle>
+        <DialogContent>
+          <TextField
+            label="Name"
             value={this.state.description}
+            margin="dense"
             onChange={this.onChange}
           />
-        </Modal.Body>
-        <Modal.Footer>
-          <button onClick={this.ok} className="btn save btn-primary">
+        </DialogContent>
+        <DialogActions>
+          <Button variant="outlined" onClick={this.ok}>
             Ok
-          </button>
-          <button onClick={this.cancel} className="btn save btn-primary">
+          </Button>
+          <Button variant="outlined" onClick={this.cancel}>
             Cancel
-          </button>
-        </Modal.Footer>
-      </Modal>
+          </Button>
+        </DialogActions>
+      </Dialog>
     );
   };
 }

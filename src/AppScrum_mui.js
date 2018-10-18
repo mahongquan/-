@@ -1,25 +1,37 @@
 import React, { Component } from 'react';
-import BoardView from './BoardView';
+import BoardView from './BoardView_mui';
 import data from './Data';
 // import {Board} from "./Data";
-import { Modal } from 'react-bootstrap';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import DlgAbout from './DlgAbout';
-import DlgInput from './DlgInput';
-import DlgOkCancel from './DlgOkCancel';
+import { withStyles } from '@material-ui/core/styles';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
+// import MenuIcon  from '@material-ui/icons/MenuIcon';
+import AppBar from '@material-ui/core/AppBar';
+import ToolBar from '@material-ui/core/ToolBar';
+import Typography from '@material-ui/core/Typography';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
+import DlgAbout from './DlgAbout_mui';
+import DlgInput from './DlgInput_mui';
+import DlgOkCancel from './DlgOkCancel_mui';
 
 const ipcRenderer = window.require('electron').ipcRenderer; //
-
-export default class AppScrum extends Component<Props> {
-  constructor() {
+const styles = {
+  root: { flexGrow: 1 },
+  grow: { flexGrow: 1 },
+  menuButton: { marginLeft: -12, marginRight: 20 },
+};
+class AppScrum extends Component<Props> {
+  constructor(props) {
     super();
     data.getconfig();
     this.state = {
       boards: data.config.boards,
+      value: 0,
       class_anim: '',
       show_input: false,
       show_about: false,
-      show_ok: false,
+      show_delete_sure: false,
     };
     if (ipcRenderer) {
       ipcRenderer.on('request_close', () => {
@@ -101,26 +113,35 @@ export default class AppScrum extends Component<Props> {
   };
   deleteBoard = key => {
     this.idx = key;
-    this.setState({ show_ok: true });
+    this.setState({ show_delete_sure: true });
+  };
+  delete_board = () => {
+    this.deleteBoard(this.state.value);
   };
   close_input = name => {
     if (name) {
       data.new_Board(name);
       this.setState({ boards: data.config.boards });
     }
-    this.setState({ show_input: false });
+    this.setState({ show_input: false, value: data.config.boards.length - 1 });
   };
   close_ok = sure => {
-    this.setState({ show_ok: false });
+    this.setState({ show_delete_sure: false });
     if (sure) {
       const filteredFoods = data.config.boards.filter(
         (item, idx) => this.idx !== idx
       );
       data.config.boards = filteredFoods;
-      this.setState({ boards: data.config.boards });
+      this.setState({ boards: data.config.boards, value: 0 });
     }
   };
+  handleChange = (e, value) => {
+    // console.log(e);
+    // console.log(value);
+    this.setState({ value: value });
+  };
   render() {
+    const { classes } = this.props;
     // console.log("render");
     // console.log(this.state);
     // let boarditem_views=this.state.boards.map((item,key)=>{
@@ -129,64 +150,47 @@ export default class AppScrum extends Component<Props> {
     //     </Tab>);
     // });
     let boarditem_list = this.state.boards.map((item, key) => {
-      return (
-        <Tab key={key}>
-          <div>
-            <span>{item.title}</span>
-            <span
-              style={{ marginLeft: '30px', cursor: 'default' }}
-              onClick={() => {
-                this.deleteBoard(key);
-              }}
-              className="glyphicon glyphicon-remove"
-              aria-hidden="true"
-            />
-          </div>
-        </Tab>
-      );
+      return <Tab key={key} label={item.title} />;
     });
     let boarditem_panels = this.state.boards.map((item, key) => {
       let stories = item.stories;
       return (
-        <TabPanel key={key} style={{ padding: '0px 10px 10px 10px' }}>
-          <BoardView
-            index={key}
-            clearStage={this.clearStage}
-            stories={stories}
-          />
-        </TabPanel>
+        <BoardView index={key} clearStage={this.clearStage} stories={stories} />
       );
     });
     return (
-      <div ref="div_anim" className={this.state.class_anim}>
-        <div>
-          <div id="select-board">
-            <button
-              onClick={this.new_board}
-              style={{
-                float: 'right',
-                marginTop: '4px',
-                marginBottom: '3px',
-                height: '30px',
-              }}
-              className="btn btn-primary new"
-              href="javascript:void 0"
-            >
+      <div
+        ref="div_anim"
+        className={classes.root + ' ' + this.state.class_anim}
+      >
+        <AppBar position="static">
+          <ToolBar>
+            <Typography color="inherit" className={classes.grow}>
+              note board
+            </Typography>
+            <Button onClick={this.new_board} color="inherit" variant="outlined">
               新建事项板
-            </button>
-          </div>
-          <Tabs>
-            <TabList ref="tabList">{boarditem_list}</TabList>
-            {boarditem_panels}
-          </Tabs>
-        </div>
+            </Button>
+            <Button
+              onClick={this.delete_board}
+              color="inherit"
+              variant="outlined"
+            >
+              删除事项板
+            </Button>
+          </ToolBar>
+        </AppBar>
+        <Tabs value={this.state.value} onChange={this.handleChange}>
+          {boarditem_list}
+        </Tabs>
+        {boarditem_panels[this.state.value]}
         <DlgInput
           showModal={this.state.show_input}
           closeModal={this.close_input}
         />
         <DlgOkCancel
           description="删除事项板"
-          showModal={this.state.show_ok}
+          showModal={this.state.show_delete_sure}
           closeModal={this.close_ok}
         />
         <DlgAbout
@@ -199,3 +203,4 @@ export default class AppScrum extends Component<Props> {
     );
   }
 }
+export default withStyles(styles)(AppScrum);
