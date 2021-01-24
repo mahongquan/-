@@ -7,8 +7,8 @@ const BrowserWindow = electron.BrowserWindow
 //-----------------------------------------------------------------
 
 const {Menu, MenuItem, dialog, ipcMain }=electron;
-
-
+app.disableHardwareAcceleration();
+console.log("run=====================");
 //是否可以安全退出
 
 let safeExit = false;

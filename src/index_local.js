@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 const fs = require('fs');
 const path = require('path');
-// console.log(path);
+console.log(path.resolve("."));
 function fileExist(p) {
   if (fs.existsSync(p)) {
     return true;
