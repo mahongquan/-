@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import BoardView from './BoardView';
 import data from './Data';
-// import {Board} from "./Data";
 import { Modal } from 'react-bootstrap';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import DlgAbout from './DlgAbout';
@@ -10,7 +9,7 @@ import DlgOkCancel from './DlgOkCancel';
 
 const ipcRenderer = window.require('electron').ipcRenderer; //
 
-export default class AppScrum extends Component<Props> {
+export default class AppScrum extends Component {
   constructor() {
     super();
     data.getconfig();
@@ -34,6 +33,9 @@ export default class AppScrum extends Component<Props> {
         this.anim();
       });
     }
+  }
+  save=()=>{
+    data.saveconfig();this.anim();
   }
   updateValue = e => {
     //console.log(e.target.value);
@@ -122,7 +124,7 @@ export default class AppScrum extends Component<Props> {
   };
   render() {
     // console.log("render");
-    // console.log(this.state);
+    console.log(this.state);
     // let boarditem_views=this.state.boards.map((item,key)=>{
     //     return(<Tab eventKey={key} key={key} title={item.title}>
     //       <BoardView id={key} />
@@ -161,7 +163,21 @@ export default class AppScrum extends Component<Props> {
       <div ref="div_anim" className={this.state.class_anim}>
         <div>
           <div id="select-board">
-            <button
+          <button
+              onClick={this.save}
+              style={{
+                float: 'right',
+                marginTop: '4px',
+                marginBottom: '3px',
+                marginLeft: '6px',
+                height: '30px',
+              }}
+              className="btn btn-secondary new"
+              href="javascript:void 0"
+            >
+              保存
+            </button>
+          <button
               onClick={this.new_board}
               style={{
                 float: 'right',
@@ -174,6 +190,7 @@ export default class AppScrum extends Component<Props> {
             >
               新建事项板
             </button>
+            
           </div>
           <Tabs>
             <TabList ref="tabList">{boarditem_list}</TabList>

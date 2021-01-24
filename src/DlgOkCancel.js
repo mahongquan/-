@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Modal } from 'react-bootstrap';
 export default class DlgOkCancel extends Component {
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow(nextProps);
     } else if (this.props.showModal && !nextProps.showModal) {

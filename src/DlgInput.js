@@ -5,7 +5,7 @@ export default class DlgInput extends Component {
   onChange = e => {
     this.setState({ description: e.target.value });
   };
-  componentWillReceiveProps(nextProps) {
+  UNSAFE_componentWillReceiveProps(nextProps) {
     if (!this.props.showModal && nextProps.showModal) {
       this.onShow(nextProps);
     } else if (this.props.showModal && !nextProps.showModal) {

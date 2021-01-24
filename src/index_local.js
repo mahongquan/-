@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './mui/AppScrum_mui'
 const fs = require('fs');
 const path = require('path');
 // console.log(path);
@@ -19,30 +20,16 @@ function link(where, module_name) {
 }
 function getWhere() {
   let p = window.require('electron').ipcRenderer.sendSync('getpath');
-  console.log(p);
-  let where;
-  if (p === '.') {
-    where = path.join(p, '.');
-  } else {
-    where = path.join(p, '..');
-  }
-  console.log(where);
-  return where;
+  return p;
 }
 let module_name;
 let where = getWhere();
 console.log(where);
-let App;
-// module_name="./AppScrum";
-module_name = './AppScrum_mui';
-// link("./","style.css");
-//
 link('./', 'animate.min.css');
-if (module_name === './AppScrum') {
-  link('./', 'style.css');
-  link(where, 'node_modules/react-tabs/style/react-tabs.css');
-  link(where, 'node_modules/bootstrap/dist/css/bootstrap.min.css');
-  link(where, 'node_modules/bootstrap/dist/css/bootstrap-theme.min.css');
-}
-App = require(module_name).default;
+// if (module_name === './AppScrum') {
+  // link('./', 'style.css');
+  // link(where, 'node_modules/react-tabs/style/react-tabs.css');
+  // link(where, 'node_modules/bootstrap/dist/css/bootstrap.min.css');
+  // link(where, 'node_modules/bootstrap/dist/css/bootstrap-theme.min.css');
+// }
 ReactDOM.render(<App />, document.getElementById('root'));

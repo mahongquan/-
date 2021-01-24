@@ -20,7 +20,7 @@ class Story {
     this.duan = duan;
   }
 }
-const initpath = window.require('electron').ipcRenderer.sendSync('getpath');
+const initpath = __dirname;
 class Data {
   static duan_name = ['将要做', '进行中', '已完成'];
   static clearStage(stage) {
@@ -80,9 +80,9 @@ class Data {
       }
     } catch (e) {
       console.log(e);
-      return {};
+      return {boards:[]};
     }
   };
-  static config = {};
+  static config = {boards:[],author:{}};
 }
 export default Data;
